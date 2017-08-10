@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas{border:1px solid #ccc;}
+    </style>
+</head>
+<body>
+
+    <canvas width="600" height="400"></canvas>
+<script>
+    var c = document.querySelector('canvas');
+    var ctx = c.getContext('2d');
+    //canvas 的中心点
+    var canvasX = c.width/2;
+    var canvasY = c.height/2;
+    //图片的行row 列col
+    var row = 0, col = 0;   //列 x轴   行 Y轴
+    var step = 5;      //定义步长
+    //获取图片
+    var img = new Image();
+    img.src = 'images/dmm.png';
+    img.onload = function(){
+        //获取单个图的大小
+        var w = img.width/4;
+        var h = img.height/4;
+        ctx.drawImage(img,col*w,row*h,w,h,canvasX-w/2,canvasY-h/2,w,h);
+        window.onkeydown = function(e){
+            ctx.clearRect(0,0, c.width, c.height);
+            switch (e.keyCode){
+                case 37:   //左
+                    row = 1;
+                    canvasX -= step;
+                    break;
+                case 38:   //上
+                    row = 3;
+                    canvasY -= step;
+                    break;
+                case 39:   //右
+                    row = 2;
+                    canvasX += step;
+                    break;
+                case 40:   //下
+                    row = 0;
+                    canvasY += step;
+                    break;
+            }
+            //判断是否走出画布
+            if(canvasX < 0+w/2){
+                canvasX = 0+w/2;
+            }else if(canvasX > c.width-w/2){
+                canvasX = c.width-w/2;
+            }else if(canvasY > c.height-h/2){
+                canvasY = c.height-h/2;
+            }else if(canvasY < 0+ h/2){
+                canvasY = 0+ h/2;
+            }
+            ctx.drawImage(img,col*w,row*h,w,h,canvasX-w/2,canvasY-h/2,w,h);
+            col++;
+            if(col>3){
+                col = 0
+            }
+        }
+    }
+</script>
+</body>
+</html>
